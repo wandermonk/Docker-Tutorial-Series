@@ -1,0 +1,47 @@
+#Installation
+
+sudo apt-get remove docker docker-engine docker.io
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+
+#Creating and working with docker-cli
+
+docker version (for docker version)
+docker info (for docker information)
+docker search <IMG-NAME> (for searching an image)
+docker pull <IMG-NAME> (for downloading the image from docker hub)
+docker run <IMG-NAME> (for running an image)
+docker ps (for listing processes)
+docker ps -a (for listing processes)
+#Docker volumes are important when the containers are stateful as docker containers are ephimeral
+docker volume ls (for listing volumes)
+docker volume create <VOLUME-NAME> (for creating a volume)
+#Sample docker run with volume
+docker run -p 80:80 --name web -d -v data:/data httpd 
+#To execute commands inside the container use below
+docker exec -it web /bin/bash (for running the shell and attaching the host with the terminal of the container)
+docker run -p 80:80 --name web -d -v $PWD/htdocs:/usr/local/apache2/htdocs httpd
+echo "<h1>Hello, Worldls from host</h1>" > index.html
+docker stop <CONTAINER-NAME> (for stopping the container)
+docker commit web doweb (for commiting the container which is modified into a new image)
+docker tag doweb phanikumaryadavilli/doweb (for assigning the location of the registry/docker-hub)
+docker push phanikumaryadavilli/doweb (for pushing image to the docker hub)
+docker rm -f <CONTAINER-NAME> (for removing the image)
+docker rmi <IMAGE-NAME> (for removing the image)
+
+To push the images to our private registry
+#Private Registry
+mkdir registry
+docker run -p 5000:5000 --restart=always --name registry -v $PWD/registry:/var/lib/registry -d registry
+docker pull busybox
+docker tag busybox localhost:5000/busybox
+docker push localhost:5000/busybox
+docker pull localhost:5000/busybox
+
+#Shortcuts
+
+docker rmi -f $(docker images -a -q) (for removing all the docker images)
