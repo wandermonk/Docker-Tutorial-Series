@@ -20,9 +20,13 @@ docker ps -a (for listing processes)
 #Docker volumes are important when the containers are stateful as docker containers are ephimeral
 docker volume ls (for listing volumes)
 docker volume create <VOLUME-NAME> (for creating a volume)
+
 #Sample docker run with volume
+
 docker run -p 80:80 --name web -d -v data:/data httpd 
+
 #To execute commands inside the container use below
+
 docker exec -it web /bin/bash (for running the shell and attaching the host with the terminal of the container)
 docker run -p 80:80 --name web -d -v $PWD/htdocs:/usr/local/apache2/htdocs httpd
 echo "<h1>Hello, Worldls from host</h1>" > index.html
@@ -34,7 +38,9 @@ docker rm -f <CONTAINER-NAME> (for removing the image)
 docker rmi <IMAGE-NAME> (for removing the image)
 
 To push the images to our private registry
+
 #Private Registry
+
 mkdir registry
 docker run -p 5000:5000 --restart=always --name registry -v $PWD/registry:/var/lib/registry -d registry
 docker pull busybox
@@ -58,4 +64,10 @@ docker network ls (for listing the network interfaces)
 docker network create --driver bridge my_web_app (for creating new network interface)
 docker run -d --name web --hostname web -p 80:80 --network=my_web_app httpd (for the webserver to access the network created in the above step)
 docker run --rm -it --network=my_web_app --name client --hostname client yauritux/busybox-curl /bin/sh (for client to access the network created in the above)
+docker network remove my_web_app (for removing the network created)
 
+#working with docker compose
+
+sudo apt-get install -y docker-compose docker-compose up (for building and running the containers as per the docker-compose.yml) docker-compose stop 
+(for stoping all the running containers through docker-compose)
+docker-compose scale <SERVICE-NAME>=<NUMBER-OF-INSTANCES> (for scaling up/down the microservices)
