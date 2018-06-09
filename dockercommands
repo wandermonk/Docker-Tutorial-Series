@@ -45,3 +45,17 @@ docker pull localhost:5000/busybox
 #Shortcuts
 
 docker rmi -f $(docker images -a -q) (for removing all the docker images)
+
+#docker networking
+#initially to test if we can communicate between two containers
+docker run -d --name web --hostname web -p 80:80 httpd
+docker run -it --rm --name client --hostname client yauritux/busybox-curl /bin/sh
+
+when we do a curl from inside the busybox container the command cannot find the httpd as it is not visible.Therefore we need to create
+a custom network.
+
+docker network ls (for listing the network interfaces)
+docker network create --driver bridge my_web_app (for creating new network interface)
+docker run -d --name web --hostname web -p 80:80 --network=my_web_app httpd (for the webserver to access the network created in the above step)
+docker run --rm -it --network=my_web_app --name client --hostname client yauritux/busybox-curl /bin/sh (for client to access the network created in the above)
+
