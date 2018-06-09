@@ -37,8 +37,7 @@ docker push phanikumaryadavilli/doweb (for pushing image to the docker hub)
 docker rm -f <CONTAINER-NAME> (for removing the image)
 docker rmi <IMAGE-NAME> (for removing the image)
 
-To push the images to our private registry
-
+#To push the images to our private registry
 #Private Registry
 
 mkdir registry
@@ -51,6 +50,7 @@ docker pull localhost:5000/busybox
 #Shortcuts
 
 docker rmi -f $(docker images -a -q) (for removing all the docker images)
+docker rm -f $(docker ps) (for removing all the docker containers running)
 
 #docker networking
 #initially to test if we can communicate between two containers
